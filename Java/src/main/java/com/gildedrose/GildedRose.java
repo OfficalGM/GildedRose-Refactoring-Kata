@@ -27,6 +27,7 @@ class GildedRose {
 
     public void updateQuality() {
         for (int i = 0; i < items.length; i++) {
+            final boolean isLessThan50 = isLessThan50(items[i]);
             if (!isEqualToItemName(items[i], AGED_BRIE)
                     && !isEqualToItemName(items[i], BACKSTAGE_PASSES_TO_A_TAFKAL_80_ETC_CONCERT)) {
                 if (isGreaterThanZero(items[i])) {
@@ -35,18 +36,18 @@ class GildedRose {
                     }
                 }
             } else {
-                if (isLessThan50(items[i])) {
+                if (isLessThan50) {
                     items[i].quality = items[i].quality + 1;
 
                     if (isEqualToItemName(items[i], BACKSTAGE_PASSES_TO_A_TAFKAL_80_ETC_CONCERT)) {
                         if (items[i].sellIn < 11) {
-                            if (isLessThan50(items[i])) {
+                            if (isLessThan50) {
                                 items[i].quality = items[i].quality + 1;
                             }
                         }
 
                         if (items[i].sellIn < 6) {
-                            if (isLessThan50(items[i])) {
+                            if (isLessThan50) {
                                 items[i].quality = items[i].quality + 1;
                             }
                         }
@@ -72,7 +73,7 @@ class GildedRose {
                         items[i].quality = items[i].quality - items[i].quality;
                     }
                 } else {
-                    if (isLessThan50(items[i])) {
+                    if (isLessThan50) {
                         items[i].quality = items[i].quality + 1;
                     }
                 }
