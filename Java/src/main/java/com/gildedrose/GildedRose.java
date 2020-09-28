@@ -24,6 +24,7 @@ class GildedRose {
         return item.quality < 50;
     }
 
+
     public void updateQuality() {
         for (int i = 0; i < items.length; i++) {
             if (!isEqualToItemName(items[i], AGED_BRIE)
@@ -57,7 +58,9 @@ class GildedRose {
                 items[i].sellIn = items[i].sellIn - 1;
             }
 
-            if (items[i].sellIn < 0) {
+            boolean isSellInLessThanZero = items[i].sellIn < 0;
+
+            if (isSellInLessThanZero) {
                 if (!isEqualToItemName(items[i], AGED_BRIE)) {
                     if (!isEqualToItemName(items[i], BACKSTAGE_PASSES_TO_A_TAFKAL_80_ETC_CONCERT)) {
                         if (isGreaterThanZero(items[i])) {
