@@ -1,5 +1,8 @@
 package com.gildedrose;
 
+import com.gildedrose.stragtegy.GeneralStrategy;
+import com.gildedrose.stragtegy.StrategyFactory;
+
 class GildedRose {
 
     private static final String AGED_BRIE = "Aged Brie";
@@ -8,76 +11,18 @@ class GildedRose {
 
     final Item[] items;
 
-    public GildedRose(Item[] items) {
+    private final StrategyFactory strategyFactory;
+
+    public GildedRose(final Item[] items) {
         this.items = items;
-    }
-
-    boolean isEqualToItemName(final Item item, final String name) {
-        return item.name.equalsIgnoreCase(name);
-    }
-
-    boolean isGreaterThanZero(final Item item) {
-        return item.quality > 0;
-    }
-
-    boolean isLessThan50(final Item item) {
-        return item.quality < 50;
+        this.strategyFactory = new StrategyFactory();
     }
 
 
     public void updateQuality() {
-        for (int i = 0; i < items.length; i++) {
-            final boolean isLessThan50 = isLessThan50(items[i]);
-            if (!isEqualToItemName(items[i], AGED_BRIE)
-                    && !isEqualToItemName(items[i], BACKSTAGE_PASSES_TO_A_TAFKAL_80_ETC_CONCERT)) {
-                if (isGreaterThanZero(items[i])) {
-                    if (!isEqualToItemName(items[i], SULFURAS_HAND_OF_RAGNAROS)) {
-                        items[i].quality = items[i].quality - 1;
-                    }
-                }
-            } else {
-                if (isLessThan50) {
-                    items[i].quality = items[i].quality + 1;
-
-                    if (isEqualToItemName(items[i], BACKSTAGE_PASSES_TO_A_TAFKAL_80_ETC_CONCERT)) {
-                        if (items[i].sellIn < 11) {
-                            if (isLessThan50) {
-                                items[i].quality = items[i].quality + 1;
-                            }
-                        }
-
-                        if (items[i].sellIn < 6) {
-                            if (isLessThan50) {
-                                items[i].quality = items[i].quality + 1;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (!isEqualToItemName(items[i], SULFURAS_HAND_OF_RAGNAROS)) {
-                items[i].sellIn = items[i].sellIn - 1;
-            }
-
-            boolean isSellInLessThanZero = items[i].sellIn < 0;
-
-            if (isSellInLessThanZero) {
-                if (!isEqualToItemName(items[i], AGED_BRIE)) {
-                    if (!isEqualToItemName(items[i], BACKSTAGE_PASSES_TO_A_TAFKAL_80_ETC_CONCERT)) {
-                        if (isGreaterThanZero(items[i])) {
-                            if (!isEqualToItemName(items[i], SULFURAS_HAND_OF_RAGNAROS)) {
-                                items[i].quality = items[i].quality - 1;
-                            }
-                        }
-                    } else {
-                        items[i].quality = items[i].quality - items[i].quality;
-                    }
-                } else {
-                    if (isLessThan50) {
-                        items[i].quality = items[i].quality + 1;
-                    }
-                }
-            }
+        for (Item item : items) {
+            final GeneralStrategy strategy = strategyFactory.createFor(item);
+            strategy.update(item);
         }
     }
 
